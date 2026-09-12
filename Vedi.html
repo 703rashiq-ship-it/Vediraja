@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vedi Raja - Professional Portfolio</title>
+    <style>
+        /* CSS Variables - High Contrast Black & Gold Aesthetic */
+        :root {
+            --bg-dark: #050505;
+            --accent-gold: #FFD700;
+            --text-light: #F3F4F6;
+            --text-muted: #9CA3AF;
+            --grid-line: rgba(255, 255, 255, 0.03);
+            
+            /* Glassmorphism Variables */
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 215, 0, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+        }
+
+        /* Subtle Background Grid */
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            z-index: -1;
+        }
+        
+        .grid-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, transparent 10%, var(--bg-dark) 90%);
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem;
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .credentials {
+            display: block;
+            color: var(--accent-gold);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .roles-container {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            min-height: 2rem;
+            font-weight: 500;
+        }
+
+        .typing-text {
+            color: var(--text-light);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            background-color: var(--accent-gold);
+            animation: blink 1s step-end infinite;
+            margin-left: 4px;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .bio {
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 1rem auto;
+            font-size: 1.1rem;
+        }
+
+        /* Buttons */
+        .cta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .btn {
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-gold);
+            color: var(--bg-dark);
+            border: 1px solid var(--accent-gold);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 215, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* Photo Placeholder */
+        .photo-wrapper {
+            width: 280px;
+            height: 350px;
+            border-radius: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #0a0a0a, #111);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-placeholder::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+
+        /* Glassmorphism Sections */
+        .section-title {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            margin: 4rem 0 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .job-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .job-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .job-company {
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+
+        .job-date {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .job-details {
+            list-style: none;
+        }
+
+        .job-details li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #d1d5db;
+            font-size: 0.95rem;
+        }
+
+        .job-details li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+        }
+
+        /* Skills Tags */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #d1d5db;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .skill-tag:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* Desktop Layout Adjustments */
+        @media (min-width: 768px) {
+            .hero {
+                flex-direction: row;
+                text-align: left;
+                justify-content: space-between;
+                padding: 6rem 0;
+            }
+
+            .hero-content {
+                align-items: flex-start;
+                flex: 1;
+            }
+
+            .name {
+                font-size: 4rem;
+            }
+
+            .credentials {
+                display: inline;
+                font-size: 1.25rem;
+                margin-left: 1rem;
+                padding-left: 1rem;
+                border-left: 2px solid var(--text-muted);
+            }
+
+            .bio {
+                margin: 1rem 0 2rem 0;
+            }
+
+            .cta-group {
+                flex-direction: row;
+                max-width: none;
+            }
+
+            .job-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: baseline;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="hero-content">
+                <h1 class="name">Vedi Raja <span class="credentials">MBA(HRM), COC, BCHHC</span></h1>
+                
+                <div class="roles-container">
+                    Expert in <span class="typing-text"></span><span class="cursor">&nbsp;</span>
+                </div>
+                
+                <p class="bio">Driving operational excellence, process optimization, and high-performance team scaling with over 13 years of healthcare RCM experience.</p>
+                
+                <div class="cta-group">
+                    <a href="#experience" class="btn btn-primary">View Work</a>
+                    <a href="#contact" class="btn btn-secondary">Contact Me</a>
+                </div>
+            </div>
+
+            <div class="photo-wrapper">
+                <div class="photo-placeholder">
+                    [ Photo Frame ]
+                </div>
+            </div>
+        </header>
+
+        <!-- Experience Section -->
+        <section id="experience">
+            <h2 class="section-title">Professional Experience</h2>
+
+            <div class="glass-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Assistant Manager</div>
+                        <div class="job-company">Optimize RCM</div>
+                    </div>
+                    <div class="job-date">May 2026 - Present · 5 mos</div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Deputy Manager Operations</div>
+                        <div class="job-company">CorroHealth</div>
+                    </div>
+                    <div class="job-date">Dec 2024 - Present · 1 yr 10 mos</div>
+                </div>
+                <ul class="job-details">
+                    <li>Own end-to-end delivery of medical coding operations, ensuring SLA adherence across productivity, quality, and TAT.</li>
+                    <li>Lead Team Leads, QA Auditors, and SMEs to maintain operational stability and scalability.</li>
+                    <li>Drive process optimization initiatives to improve turnaround time, reduce rework, and improve first-pass accuracy.</li>
+                    <li>Analyze daily, weekly, and monthly KPIs to identify risks and implement corrective actions.</li>
+                    <li>Partner with clients and internal stakeholders to address escalations and performance gaps.</li>
+                    <li>Mentor leadership resources to strengthen succession planning and team maturity.</li>
+                </ul>
+            </div>
+
+            <div class="glass-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Team Lead</div>
+                        <div class="job-company">LogixHealth</div>
+                    </div>
+                    <div class="job-date">Aug 2017 - Nov 2024 · 7 yrs 4 mos</div>
+                </div>
+                <ul class="job-details">
+                    <li>Managed full-cycle medical coding for outpatient services, ensuring 100% adherence to ICD-10-CM and CPT guidelines.</li>
+                    <li>Resolved complex coding denials and ER claims, improving revenue cycle efficiency and reducing outstanding accounts.</li>
+                    <li>Consistently exceeded Service Level Agreements (SLAs) for productivity and accuracy.</li>
+                    <li>Led internal audits for team members to maintain high quality-control standards.</li>
+                    <li>Mentored junior coders by providing technical clarifications and resolving workflow bottlenecks.</li>
+                    <li>Acted as a primary client liaison, managing daily production logs and communication regarding claim clarifications.</li>
+                    <li>Collaborated with HR and Admin departments to facilitate team scaling and resource requirements.</li>
+                </ul>
+            </div>
+
+            <div class="glass-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Senior Medical Coder</div>
+                        <div class="job-company">World Source Healthcare India</div>
+                    </div>
+                    <div class="job-date">Jul 2015 - Jul 2017 · 2 yrs 1 mo</div>
+                </div>
+                <ul class="job-details">
+                    <li>Delivered high-quality coding for multispecialty outpatient and ED encounters.</li>
+                    <li>Supported internal and external audits and quality improvement initiatives.</li>
+                    <li>Mentored junior coders on guidelines and best practices.</li>
+                </ul>
+            </div>
+
+            <div class="glass-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Process Associate</div>
+                        <div class="job-company">Omega Healthcare Management Services</div>
+                    </div>
+                    <div class="job-date">Mar 2014 - Jul 2015 · 1 yr 5 mos</div>
+                </div>
+                <ul class="job-details">
+                    <li>Performed accurate medical coding while meeting productivity and quality benchmarks.</li>
+                    <li>Gained exposure to end-to-end RCM workflows and downstream impacts of coding accuracy.</li>
+                </ul>
+            </div>
+
+            <div class="glass-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Coder</div>
+                        <div class="job-company">Intelenet Global Services Pvt Ltd</div>
+                    </div>
+                    <div class="job-date">Mar 2011 - Mar 2014 · 3 yrs 1 mo</div>
+                </div>
+                <ul class="job-details">
+                    <li>Delivered consistent coding quality across assigned specialties.</li>
+                    <li>Built strong foundation in ICD and CPT coding standards.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education">
+            <h2 class="section-title">Education</h2>
+            <div class="glass-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Master of Business Administration (MBA)</div>
+                        <div class="job-company">Loyola College</div>
+                    </div>
+                    <div class="job-date">2014 – 2016</div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Focus: Analytical Skills, Life Sciences</p>
+            </div>
+            
+            <div class="glass-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">MBA, Human Resources Management / Personnel Administration</div>
+                        <div class="job-company">Pondicherry University & Periyar University</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills">
+            <h2 class="section-title">Core Competencies & Skills</h2>
+            <div class="glass-card">
+                <div class="skills-container">
+                    <span class="skill-tag">Revenue Cycle Management (RCM)</span>
+                    <span class="skill-tag">Medical Coding</span>
+                    <span class="skill-tag">ICD-10-CM / ICD-9</span>
+                    <span class="skill-tag">CPT Coding</span>
+                    <span class="skill-tag">HIPAA Compliance</span>
+                    <span class="skill-tag">Denial Management</span>
+                    <span class="skill-tag">Operations Management</span>
+                    <span class="skill-tag">Service-Level Agreements (SLA)</span>
+                    <span class="skill-tag">Client Liaison</span>
+                    <span class="skill-tag">Continuous Improvement</span>
+                    <span class="skill-tag">Root Cause Analysis</span>
+                    <span class="skill-tag">Business Process Re-engineering</span>
+                    <span class="skill-tag">Succession Planning</span>
+                    <span class="skill-tag">Conflict Resolution</span>
+                    <span class="skill-tag">Internal & External Audits</span>
+                    <span class="skill-tag">Risk Adjustment</span>
+                    <span class="skill-tag">Clinical Documentation</span>
+                    <span class="skill-tag">Performance Improvement</span>
+                    <span class="skill-tag">Coaching & Mentoring</span>
+                    <span class="skill-tag">High Performance Teams</span>
+                    <span class="skill-tag">Capacity Planning</span>
+                    <span class="skill-tag">Data-driven Operations</span>
+                    <span class="skill-tag">Electronic Health Records (EHR)</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Typing Script -->
+    <script>
+        const roles = [
+            "Medical Coding",
+            "HIPAA Compliance",
+            "Client & People Management",
+            "RCM Optimization",
+            "SLA Delivery"
+        ];
+
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        
+        const typingSpeed = 60;
+        const deletingSpeed = 30;
+        const delayBetweenRoles = 2000;
+
+        const typingTextElement = document.querySelector('.typing-text');
+
+        function typeEffect() {
+            const currentRole = roles[roleIndex];
+            
+            if (isDeleting) {
+                typingTextElement.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingTextElement.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? deletingSpeed : typingSpeed;
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                typeSpeed = delayBetweenRoles;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                typeSpeed = 400; 
+            }
+
+            setTimeout(typeEffect, typeSpeed);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(typeEffect, 800);
+        });
+    </script>
+</body>
+</html>
